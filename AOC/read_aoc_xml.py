@@ -1,18 +1,9 @@
 from lxml import etree
 import os
 import subprocess
+from pdf_to_xml import dumps_pdf
 from AOC.balance_sheet import balance_sheet
 from AOC.profit_and_loss import profit_and_loss , print_all_data
-
-def dumps_pdf(cin,file_name):
-    command = ['dumppdf.py', '-a', f'{cin}/{file_name}']
-
-    output_file = f'{cin}/{file_name}.xml'
-
-    # Open the output file in append mode ('a') and redirect the command output to it (stdout)
-    with open(output_file, 'a') as file:
-        subprocess.run(command, stdout=file, check=True)
-
 
 def aoc_form(cin,file_name):
     data = {}
