@@ -1,0 +1,41 @@
+ * Serving Flask app 'main' (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+ * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+ * Running on http://165.22.218.31:8097/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 296-050-399
+182.237.178.42 - - [04/Jul/2023 16:46:41] "POST /aoc HTTP/1.1" 200 -
+182.237.178.42 - - [04/Jul/2023 16:46:53] "POST /aoc HTTP/1.1" 200 -
+182.237.178.42 - - [04/Jul/2023 16:48:01] "POST /aoc HTTP/1.1" 200 -
+ * Detected change in '/root/mca_report/main.py', reloading
+PDF TO XML
+PDF TO XML
+PDF TO XML
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 296-050-399
+ * Detected change in '/root/mca_report/main.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 296-050-399
+182.237.178.42 - - [04/Jul/2023 16:49:14] "POST /aoc HTTP/1.1" 200 -
+182.237.178.42 - - [04/Jul/2023 16:49:23] "POST /aoc HTTP/1.1" 200 -
+182.237.178.42 - - [04/Jul/2023 16:49:44] "POST /aoc HTTP/1.1" 200 -
+54.86.50.139 - - [04/Jul/2023 16:49:59] "POST /aoc HTTP/1.1" 200 -
+ * Detected change in '/root/mca_report/AOC/balance_sheet.py', reloading
+PDF TO XML
+PDF TO XML
+PDF TO XML
+PDF TO XML
+ * Restarting with stat
+Traceback (most recent call last):
+  File "/root/mca_report/main.py", line 2, in <module>
+    from AOC.read_aoc_xml import aoc_form
+  File "/root/mca_report/AOC/read_aoc_xml.py", line 5, in <module>
+    from AOC.balance_sheet import balance_sheet
+ImportError: cannot import name 'balance_sheet' from 'AOC.balance_sheet' (/root/mca_report/AOC/balance_sheet.py)

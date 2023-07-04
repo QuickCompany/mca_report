@@ -64,6 +64,9 @@ def mgt7_form(cin,file_name):
     xml_parsing(root,False)
     xml_parsing(root,True)
 
+    os.remove(f'{cin}/{file_name}')
+    os.remove(f'{cin}/{file_name}.xml')
+
     return data
 
 # print(parse_mgt7('U51909TG1998PLC029205','[14]_[04-Feb-2019]_Form MGT-7-04022019_signed'))

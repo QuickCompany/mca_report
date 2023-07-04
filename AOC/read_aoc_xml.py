@@ -2,8 +2,8 @@ from lxml import etree
 import os
 import subprocess
 from pdf_to_xml import dumps_pdf
-from AOC.balance_sheet import balance_sheet
-from AOC.profit_and_loss import profit_and_loss , print_all_data
+from AOC.balance_sheet import AocBalanceSheet
+from AOC.profit_and_loss import AocProfitLoss
 
 key_mappings = {
     '.Segment2_1[0].Current[0]': 'FINANCIAL_YEAR_FROM',
@@ -28,6 +28,9 @@ def aoc_form(cin,file_name):
     tree = etree.parse(f'{cin}/{file_name}.xml', parser=parser)
     root = tree.getroot()
 
+    aoc_balance_sheet = AocBalanceSheet()
+    aoc_profit_and_loss = AocProfitLoss()
+
     for value_element in root.iter('value'):
         string_element = value_element.find('string')
 
@@ -37,10 +40,10 @@ def aoc_form(cin,file_name):
             if text:
 
                 if ".BalanceSheet1_PartB[0]" in text:
-                    data['balance_sheet'] = balance_sheet(value_element , text)
+                    data['balance_sheet'] = aoc_balance_sheet.balance_sheet(value_element , text)
 
                 if ".NumericField" in text:
-                    profit_and_loss(value_element , text)
+                    aoc_profit_and_loss.profit_and_loss(value_element , text)
 
                 else:
                     for key, value in key_mappings.items():
@@ -48,7 +51,10 @@ def aoc_form(cin,file_name):
                             data[value] =  parse_string(value_element)
                             break
 
-    data['statement of profit and loss'] = print_all_data()
+    data['statement of profit and loss'] = aoc_profit_and_loss.print_all_data()
+
+    os.remove(f'{cin}/{file_name}')
+    os.remove(f'{cin}/{file_name}.xml')
 
     return data
 
