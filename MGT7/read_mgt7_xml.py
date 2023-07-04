@@ -1,7 +1,7 @@
 from lxml import etree
 import subprocess
 import os
-from MGT7.data_extraction import parse_table , parse_string ,directors_data
+from MGT7.data_extraction import mgt7_data_extraction
 from pdf_to_xml import dumps_pdf
 
 table = []
@@ -22,6 +22,36 @@ key_mappings = {
     '.DueDateAgm[0]': 'DUE_DATE_OF_AGM'
 }
 
+def xml_parsing(root,param):
+    mgt_class  = mgt7_data_extraction()
+    for value_element in root.iter('value'):
+        string_element = value_element.find('string')
+
+        if string_element is not None:
+            text = string_element.text
+            if text:
+                if not param:
+                    if ".SectionVIIIADynamic[0].Table13[0]" in text:
+                        table.append(mgt_class.parse_table(value_element))
+
+                    if 'data[0].FormMGT7_Dtls[0].MainPage[0].SectionVI[0].Promotors[0].Table9[0]' in text:
+                        mgt_class.parse_share_holding(value_element)
+
+                    else:
+                        for key, value in key_mappings.items():
+                            if key in text:
+                                data[value] =  mgt_class.parse_string(value_element)
+                                break
+                else:
+                    if 'data[0].FormMGT7_Dtls[0].MainPage[0].SectionVI[0].Public[0].Table9[0]' in text:
+                        mgt_class.parse_share_holding(value_element)
+
+    if not param:
+        data['directors'] = mgt_class.directors_data(table)
+        data['SHARE HOLDING PATTERN - Promoters (not applicable for OPC)'] = mgt_class.return_share_holding_data()
+    else:
+        data['SHARE HOLDING PATTERN - Public/Other than promoters '] = mgt_class.return_share_holding_data()
+
 
 def mgt7_form(cin,file_name):
     dumps_pdf(cin,file_name)
@@ -31,22 +61,8 @@ def mgt7_form(cin,file_name):
     tree = etree.parse(f'{cin}/{file_name}.xml', parser=parser)
     root = tree.getroot()
 
-    for value_element in root.iter('value'):
-        string_element = value_element.find('string')
-
-        if string_element is not None:
-            text = string_element.text
-            if text:
-                if ".SectionVIIIADynamic[0].Table13[0]" in text:
-                    table.append(parse_table(value_element))
-
-                else:
-                    for key, value in key_mappings.items():
-                        if key in text:
-                            data[value] =  parse_string(value_element)
-                            break
-
-    data['directors'] = directors_data(table)
+    xml_parsing(root,False)
+    xml_parsing(root,True)
 
     return data
 
