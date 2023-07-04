@@ -20,8 +20,6 @@ def MGT7():
 
     File.save(f'{cin}/{name}')
 
-    print("working")
-
     if "mgt-7" in name.lower():
         return mgt7_form(cin,name)
 
