@@ -53,8 +53,8 @@ def aoc_form(cin,file_name):
 
     data['statement of profit and loss'] = aoc_profit_and_loss.print_all_data()
 
-    os.remove(f'{cin}/{file_name}')
-    os.remove(f'{cin}/{file_name}.xml')
+    # os.remove(f'{cin}/{file_name}')
+    # os.remove(f'{cin}/{file_name}.xml')
 
     return data
 

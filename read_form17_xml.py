@@ -17,7 +17,7 @@ data = {}
 
 def dumps_pdf(cin,file_name):
 
-    print("PDF TO XML")    
+    print("PDF TO XML")
 
     if not os.path.exists(cin):
         os.makedirs(cin)
@@ -60,4 +60,4 @@ def form17(cin,file_name):
 
     print(data)
 
-form17('U26943RJ1948SGC000612','Form 17-070608-ChargeId-80043520.PDF')
+# form17('U26943RJ1948SGC000612','Form 17-070608-ChargeId-80043520.PDF')
