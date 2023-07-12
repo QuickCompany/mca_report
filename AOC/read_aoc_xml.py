@@ -1,63 +1,27 @@
-from lxml import etree
+from AOC.aoc import Aoc
+import pikepdf
+import sys
 import os
-import subprocess
-from pdf_to_xml import dumps_pdf
-from AOC.balance_sheet import AocBalanceSheet
-from AOC.profit_and_loss import AocProfitLoss
-
-key_mappings = {
-    '.Segment2_1[0].Current[0]': 'FINANCIAL_YEAR_FROM',
-    '.Segment2_1[0].CurrentTo[0]': 'FINANCIAL_YEAR_TO',
-}
-
-def parse_string(value_element):
-    desired_value = value_element
-    object_element = desired_value.getparent()  # Get the parent element
-    dict_elements = object_element.findall('.//string')
-    if len(dict_elements) >= 5:
-        return dict_elements[-1].text
-    else:
-        return None
-
-def aoc_form(cin,file_name):
-    data = {}
-
-    dumps_pdf(cin,file_name)
-
-    parser = etree.XMLParser(recover=True)
-    tree = etree.parse(f'{cin}/{file_name}.xml', parser=parser)
-    root = tree.getroot()
-
-    aoc_balance_sheet = AocBalanceSheet()
-    aoc_profit_and_loss = AocProfitLoss()
-
-    for value_element in root.iter('value'):
-        string_element = value_element.find('string')
-
-        if string_element is not None:
-            text = string_element.text
-
-            if text:
-
-                if ".BalanceSheet1_PartB[0]" in text:
-                    data['balance_sheet'] = aoc_balance_sheet.balance_sheet(value_element , text)
-
-                if ".NumericField" in text:
-                    aoc_profit_and_loss.profit_and_loss(value_element , text)
-
-                else:
-                    for key, value in key_mappings.items():
-                        if key in text:
-                            data[value] =  parse_string(value_element)
-                            break
-
-    data['statement of profit and loss'] = aoc_profit_and_loss.print_all_data()
-
-    # os.remove(f'{cin}/{file_name}')
-    # os.remove(f'{cin}/{file_name}.xml')
-
-    return data
+import re
+import xmltodict
+import json
 
 
-# print(aoc_form('vikhil','Form AOC-4-14092022_signed.pdf'))
 
+    
+def aoc_form(xml):
+    balance_sheet = Aoc()
+
+    # # Convert XML to dictionary
+    xml_dict = xmltodict.parse(xml)
+    # # Convert dictionary to JSON
+    json_data = json.dumps(xml_dict, indent=2)
+    json_data = json.loads(json_data)
+    # # Print the JSON data
+
+    balance_sheet_output = balance_sheet.balance_sheet(json_data['xfa:datasets']['xfa:data']['data']['ZMCA_NCA_AOC_4'])
+    profit_and_loss_output = balance_sheet.profit_and_loss(json_data['xfa:datasets']['xfa:data']['data']['ZMCA_NCA_AOC4_II'])
+    
+    output = {'BALANCE SHEET' : balance_sheet_output , "PROFIT AND LOSS" : profit_and_loss_output}
+
+    return output
